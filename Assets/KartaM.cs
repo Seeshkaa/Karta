@@ -6,8 +6,10 @@ public class KartaM : MonoBehaviour
 {
     public GameObject Dialog1;
     private bool open = false;
-    public GameObject move;
-    public Camera camera;
+    public FirstPersonMovement move;
+    public FirstPersonLook camera;
+
+    public Animation armAnim;
 
     //public Animator anim;
     //private float animationInterpolation = 1f;
@@ -25,25 +27,29 @@ public class KartaM : MonoBehaviour
 
     void Update()
     {
-        
+        if(!armAnim.IsPlaying("animRuk"))
+            armAnim.Play("animIdle");
+
         if (Input.GetKeyDown("m"))
         {
+            armAnim.Stop();
+            armAnim.Play("animRuk");
             open = !open;
-            if (open)
-            {
-                move.GetComponent<FirstPersonMovement>().enabled = false;
-                camera.GetComponent<FirstPersonLook>().enabled = false;
+            if (open && !armAnim.IsPlaying("animRuk"))
+            {  
+                move.enabled = false;
+                camera.enabled = false;
                 Dialog1.SetActive(true);
                 //KA();
             }
             else
             {
-                move.GetComponent<FirstPersonMovement>().enabled = true;
-                camera.GetComponent<FirstPersonLook>().enabled = true;
+                move.enabled = true;
+                camera.enabled = true;
                 Dialog1.SetActive(false);
             }
         }
 
     }
-}
 
+}
